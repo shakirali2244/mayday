@@ -1,5 +1,5 @@
 {
-  "name": "hustle",
+  "name": "mayday",
   "version": "1.0.0",
   "description": "socket server for location tracking",
   "main": "app.js",

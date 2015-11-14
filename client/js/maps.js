@@ -29,13 +29,13 @@ function initMap() {
 	 });
     $('form').submit(function(){
     socket.emit('chatMessage', { name: 'web map',message: $('#m').val()});
-    $('#messages').append($('<li>').text('you: ' + $('#m').val()));
+    $('#messages').append($('<li>').text('You:: ' + $('#m').val()));
     $('#m').val('');
 
     return false;
   });
   socket.on('chatMessage', function(data){
-    $('#messages').append($('<li>').text(data.name + ' ' +data.message));
+    $('#messages').append($('<li>').text(data.name + ':: ' +data.message));
   });
 }
 

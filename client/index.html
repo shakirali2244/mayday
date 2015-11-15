@@ -18,12 +18,18 @@
 <script src="/js/jquery.js"></script>
 <div class="container-fluid">
 <div class="row">
-<div class ="col-md-9" id="map"></div>
-<div class="col-md-3" style="max-height: 150px; overlow-y:scroll;">
+<div class ="col-md-9 col-xs-1" id="map"></div>
+<div class="col-md-3 col-xs-17">
+<div class="row">
+<a href="https://play.google.com/store/apps/details?id=com.placeholder.badger">
+<img src="/images/en-play-badge.png" style="max-width: 100%"></a>
+</div>
+<div id="messages_div"class="row" style="max-height: 80vh;overflow-y:scroll;">
 <ul id="messages"></ul>
     <form action="">
       <input id="m" autocomplete="off" /><button>Send</button>
     </form>
+</div>
 </div>
 </div>
 <script src="http://shakirali.me:3001/socket.io/socket.io.js">

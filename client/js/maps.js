@@ -12,7 +12,12 @@ function initMap() {
   map.set('styles',stylesArray);
 
     socket = io.connect('http://shakirali.me:3001');
- 	 socket.on('location', function(data){
+    navigator.geolocation.getCurrentPosition(GetLocation);
+    var name = prompt("Please enter your name", "Harry Potter");
+    function GetLocation(location) {
+    socket.emit('locationInfo',{lat: location.coords.latitude, lng: location.coords.longitude, name: name});
+    }
+	 socket.on('location', function(data){
 		 if (!map){
 			 map = new google.maps.Map(document.getElementById('map'), {
 				 center: {lat:49.289922,lng: -123.130646},
@@ -27,7 +32,7 @@ function initMap() {
 		 }
 	 });
     $('form').submit(function(){
-    socket.emit('chatMessage', { name: 'web map',message: $('#m').val()});
+    socket.emit('chatMessage', { name: name,message: $('#m').val()});
     $('#messages').append($('<li>').text('You:: ' + $('#m').val()));
     $('#m').val('');
     var chat_window = document.getElementById("messages_div");

@@ -11,7 +11,7 @@ function initMap() {
   });
   map.set('styles',stylesArray);
 
-    socket = io.connect('http://shakirali.me:3001');
+    socket = io.connect('http://shakirali.me:3002');
     navigator.geolocation.getCurrentPosition(GetLocation);
     var name = prompt("Please enter your name", "Harry Potter");
     function GetLocation(location) {

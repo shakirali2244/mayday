@@ -8,7 +8,7 @@ io = require('socket.io')(server);
 
 var socket = require('./lib/socket');
 
-server.listen(3001);
+server.listen(3002);
 
 //everything socket related in the /lib/socket.js
 io.on('connection', function(req){

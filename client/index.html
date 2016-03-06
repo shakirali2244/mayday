@@ -1,6 +1,6 @@
 
 <head>
-<link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="/mapchat/css/bootstrap.min.css">
     <style>
       * { margin: 0; padding: 0; box-sizing: border-box; }
       body { font: 13px Helvetica, Arial; }
@@ -13,16 +13,16 @@
     </style>
   </head>
   <body>
-<script src = "/js/maps.js">
+<script src = "/mapchat/js/maps.js">
 </script>
-<script src="/js/jquery.js"></script>
+<script src="/mapchat/js/jquery.js"></script>
 <div class="container-fluid">
 <div class="row">
 <div class ="col-md-9 col-xs-1" id="map"></div>
 <div class="col-md-3 col-xs-17">
 <div class="row">
 <a href="https://play.google.com/store/apps/details?id=com.placeholder.badger">
-<img src="/images/en-play-badge.png" style="max-width: 100%"></a>
+<img src="/mapchat/images/en-play-badge.png" style="max-width: 100%"></a>
 </div>
 <div id="messages_div"class="row" style="max-height: 80vh;overflow-y:scroll;">
 <ul id="messages"></ul>
@@ -32,7 +32,7 @@
 </div>
 </div>
 </div>
-<script src="http://shakirali.me:3001/socket.io/socket.io.js">
+<script src="http://shakirali.me:3002/socket.io/socket.io.js">
 </script>
 <script async defer
       src="https://maps.googleapis.com/maps/api/js?callback=initMap">

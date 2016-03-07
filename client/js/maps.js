@@ -32,6 +32,7 @@ $('form').submit(function(){
     }else{
       echoChatWindow('Joined room '+ data);
       console.log('Joined room '+ data);
+      fillChatWindow(data);
     }
     
   });
@@ -43,10 +44,13 @@ $('form').submit(function(){
       alert("Can only join one room, refresh the page to reset room");
     }else{
       joined = 1;
-      
-      
       socket.emit('chatMessage', { name: name, message: '/join '+data});
-      $.ajax({
+    }
+    
+  }
+
+  function fillChatWindow(data){
+    $.ajax({
         type: "GET",
         url: "/msgs/"+data,
         success: function(data) {
@@ -56,9 +60,8 @@ $('form').submit(function(){
             addMessage(JSON.parse(array[i]));
           }
         }
+        
       });
-    }
-    
   }
 
   function echoChatWindow(data){

@@ -1,10 +1,13 @@
 var express = require('express');
 var app = express();
 var server = require('http').Server(app);
+fs = require('fs');
+os = require("os");
 
 jsarr = [];
 
 io = require('socket.io')(server);
+app.use(express.static('msgs'));
 
 var socket = require('./lib/socket');
 

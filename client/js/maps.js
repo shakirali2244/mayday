@@ -1,6 +1,28 @@
 
 socket = io.connect('http://redditchat.us.to:3001');
-var name = prompt("Please enter your name", "Harry Potter");
+var name = '';
+chat_window = document.getElementById("messages_div");
+chat_name = document.getElementById("chat_name");
+var joined = 0;
+myRooms = [];
+exdays = 365;
+
+if(getCookie('name') == ""){
+  name = prompt("Please enter your name", "Harry Potter");
+  setCookie('name', name);
+  chat_name.innerHTML = name;
+}else{
+  name = getCookie('name');
+  chat_name.innerHTML = name;
+  if(getCookie('myRooms') != ""){
+    myRooms = JSON.parse(getCookie('myRooms'));
+  }
+  
+  for (var i=0; i<myRooms.length; i++) {
+    $("#roomList ul").prepend('<li><button class="btn btn-default" id="roomButton" onclick="joinRoom(\''+myRooms[i]+'\')">'+myRooms[i]+'</button></li>');
+  }
+}
+
 $('form').submit(function(){
     if ($('#m').val() == ''){
       return false;
@@ -15,15 +37,13 @@ $('form').submit(function(){
       $('#messages').append($('<li class="list-group-item">'+name+'(me):' + $('#m').val()+'</li>'));
     }
     $('#m').val('');
-    var chat_window = document.getElementById("messages_div");
+    
     chat_window.scrollTop = chat_window.scrollHeight;
     return false;
   });
 
   socket.on('chatMessage', function(data){
     addMessage(data);
-    var chat_window = document.getElementById("messages_div");
-    chat_window.scrollTop = chat_window.scrollHeight;
   });
 
   socket.on('roomJoin',function(data){
@@ -32,13 +52,15 @@ $('form').submit(function(){
     }else{
       echoChatWindow('Joined room '+ data);
       console.log('Joined room '+ data);
+      myRooms.push(data);
+      $("#roomList ul").prepend('<li><button class="btn btn-default" id="roomButton" onclick="joinRoom(\''+data+'\')">'+data+'</button></li>');
+      setCookie('myRooms',JSON.stringify(myRooms));
       fillChatWindow(data);
     }
-    
   });
 
-  var joined = 0;
 
+  //cmd helper
   function joinRoom(data){
     if (joined){
       alert("Can only join one room, refresh the page to reset room");
@@ -49,6 +71,7 @@ $('form').submit(function(){
     
   }
 
+  //http retrive previous msgs
   function fillChatWindow(data){
     $.ajax({
         type: "GET",
@@ -78,6 +101,11 @@ $('form').submit(function(){
     }else{
       $('#messages').append($('<li class="list-group-item">'+data.name + ': ' +data.message + '</li>'));
     }
+    console.log(chat_window.scrollHeight);
+    chat_window.scrollTop = chat_window.scrollHeight;
+    setTimeout(function () {
+        console.log(chat_window.scrollHeight);
+    }, 5000);
   }
 
   $.ajax({
@@ -91,3 +119,23 @@ $('form').submit(function(){
           }
         }
       });
+
+
+
+function setCookie(cname, cvalue) {
+    var d = new Date();
+    d.setTime(d.getTime() + (exdays*24*60*60*1000));
+    var expires = "expires="+d.toUTCString();
+    document.cookie = cname + "=" + cvalue + "; " + expires;
+}
+
+function getCookie(cname) {
+    var name = cname + "=";
+    var ca = document.cookie.split(';');
+    for(var i=0; i<ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0)==' ') c = c.substring(1);
+        if (c.indexOf(name) == 0) return c.substring(name.length,c.length);
+    }
+    return "";
+}

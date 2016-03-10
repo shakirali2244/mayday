@@ -25,9 +25,18 @@
 <div class="row">
 <div class ="col-md-6 col-xs-4" >
   <div class="row" style="min-height:500px;">
-	  <div class="embed-responsive embed-responsive-16by9">
+   <div class ="col-md-6 col-xs-4" >
+    <h3> Hello <span id ="chat_name">Stranger</span></h3>
+	  <!--div class="embed-responsive embed-responsive-16by9">
 	  	<iframe class="embed-responsive-item" src="https://www.youtube.com/embed/5A-4VGfx5lU" allowfullscreen></iframe>
-	  </div>
+	  </div-->
+    </div>
+    <div class ="col-md-6 col-xs-4" id = "roomList" style="max-height: 50vh;overflow-y:scroll;">
+    <li class="list-group-item active"><h3>Join a previous room again</h3></li>
+      <ul class="tabs nav nav-pills nav-stacked">
+        <!--li><button class="btn btn-default" onclick="joinRoom('test')">test</button></li-->
+      </ul>
+    </div>
   </div>
   <div class="row">
 	  <div class ="col-md-6 col-xs-4" >
@@ -68,12 +77,12 @@
 </div>
 <div class ="col-md-3 col-xs-4" id = "list" style="max-height: 100vh;overflow-y:scroll;">
   <ul class="tabs nav nav-pills nav-stacked">
-        <li class="list-group-item active"><h1>Click on a subreddit to start talking in</h1></li>
+        <li class="list-group-item active"><h3>Click on a subreddit to start talking in</h3></li>
         <!--li><button class="btn btn-default" onclick="joinRoom('test')">test</button></li-->
     </ul>
 </div>
 <div class="col-md-3 col-xs-4">
-  <div id="messages_div"class="row" style="max-height: 96vh;overflow-y:scroll;">
+  <div id="messages_div" class="row" style="max-height: 96vh;overflow-y:scroll;">
   <ul id="messages" class="list-group"></ul>
       <form action="">
         <input id="m" autocomplete="off" /><button>Send</button>

@@ -3,12 +3,14 @@ socket = io.connect('http://redditchat.us.to:3001');
 var name = '';
 chat_window = document.getElementById("messages_div");
 chat_name = document.getElementById("chat_name");
+roomHeader = document.getElementById("roomHeader");
 var joined = 0;
 myRooms = [];
 exdays = 365;
 
 if(getCookie('name') == ""){
   name = prompt("Please enter your name", "Harry Potter");
+  name = name.toLowerCase();
   setCookie('name', name);
   chat_name.innerHTML = name;
 }else{
@@ -47,17 +49,27 @@ $('form').submit(function(){
   });
 
   socket.on('roomJoin',function(data){
-    if(data == 0){
-      alert("Can only join one room, refresh the page to reset room");
+    if(data.stat == 0){
+      alert(data.msg);
     }else{
-      echoChatWindow('Joined room '+ data);
-      console.log('Joined room '+ data);
-      myRooms.push(data);
-      $("#roomList ul").prepend('<li><button class="btn btn-default" id="roomButton" onclick="joinRoom(\''+data+'\')">'+data+'</button></li>');
+      echoChatWindow('Joined room '+ data.room);
+      console.log('Joined room '+ data.room);
+      myRooms.push(data.room);
+      $("#roomList ul").prepend('<li><button class="btn btn-default" id="roomButton" onclick="joinRoom(\''+data.room+'\')">'+data.room+'</button></li>');
       setCookie('myRooms',JSON.stringify(myRooms));
-      fillChatWindow(data);
+      fillChatWindow(data.room);
+      joined = 1;
     }
   });
+
+   socket.on('roomStat',function(data){
+    roomHeader.innerHTML = "Online Users";
+    $("#list ul").empty();
+    data.forEach(function(v){
+      ("#list ul").append('<li><button class="btn btn-default" id="roomButton">'+v.name+'</button></li>');
+    });
+});
+
 
 
   //cmd helper
@@ -65,7 +77,6 @@ $('form').submit(function(){
     if (joined){
       alert("Can only join one room, refresh the page to reset room");
     }else{
-      joined = 1;
       socket.emit('chatMessage', { name: name, message: '/join '+data});
     }
     
@@ -120,7 +131,13 @@ $('form').submit(function(){
         }
       });
 
-
+function resetName(){
+  deleteCookie('name');
+  name = prompt("Please enter your name", name);
+  name = name.toLowerCase();
+  chat_name.innerHTML = name;
+  setCookie('name',name);
+}
 
 function setCookie(cname, cvalue) {
     var d = new Date();
@@ -138,4 +155,8 @@ function getCookie(cname) {
         if (c.indexOf(name) == 0) return c.substring(name.length,c.length);
     }
     return "";
+}
+
+function deleteCookie(cname){
+  document.cookie = cname+"=; expires=Thu, 01 Jan 1970 00:00:00 UTC";
 }

@@ -68,7 +68,7 @@ $('form').submit(function(){
     $("#list ul").empty();
     data.forEach(function(v){
 
-      $("#list ul").append('<li><button class="btn btn-default" id="roomButton">'+v.name+'</button></li>');
+      $("#list ul").append('<li><button class="btn btn-default">'+v.name+'</button></li>');
     });
 });
 
@@ -124,9 +124,6 @@ $('form').submit(function(){
     }
     console.log(chat_window.scrollHeight);
     chat_window.scrollTop = chat_window.scrollHeight;
-    setTimeout(function () {
-        console.log(chat_window.scrollHeight);
-    }, 5000);
   }
 
   $.ajax({

@@ -63,10 +63,12 @@ $('form').submit(function(){
   });
 
    socket.on('roomStat',function(data){
+    console.log(data);
     roomHeader.innerHTML = "Online Users";
     $("#list ul").empty();
     data.forEach(function(v){
-      ("#list ul").append('<li><button class="btn btn-default" id="roomButton">'+v.name+'</button></li>');
+
+      $("#list ul").append('<li><button class="btn btn-default" id="roomButton">'+v.name+'</button></li>');
     });
 });
 

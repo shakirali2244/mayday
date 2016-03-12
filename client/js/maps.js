@@ -6,6 +6,7 @@ chat_name = document.getElementById("chat_name");
 roomHeader = document.getElementById("roomHeader");
 var joined = 0;
 myRooms = [];
+serverInfo = {};
 exdays = 365;
 
 if(getCookie('name') == ""){
@@ -63,7 +64,6 @@ $('form').submit(function(){
   });
 
    socket.on('roomStat',function(data){
-    console.log(data);
     roomHeader.innerHTML = "Online Users";
     $("#list ul").empty();
     data.forEach(function(v){
@@ -71,6 +71,14 @@ $('form').submit(function(){
       $("#list ul").append('<li><button class="btn btn-default" id="roomButton">'+v.name+'</button></li>');
     });
 });
+
+   socket.on('serverInfo',function(data){
+    console.log(data);
+    for (var key in data) {
+      $("#"+key).text(data[key]);
+    }
+    serverInfo=data;
+  });
 
 
 
@@ -128,7 +136,10 @@ $('form').submit(function(){
         success: function(data) {
           var array = data.data;
           for (var i=0; i<array.length; i++) {
-            $("#list ul").append('<li><button class="btn btn-default" id="roomButton" onclick="joinRoom(\''+array[i].subreddit+'\')">'+array[i].subreddit+'</button></li>');
+            $("#list ul").append('<li><button class=" btn btn-default" id = "roomButton" onclick="joinRoom(\''+array[i].subreddit.toLowerCase()+'\')">'+array[i].subreddit+'<span id="'+array[i].subreddit.toLowerCase()+'" class="badge"></span></button></li>');
+          }
+          for (var key in serverInfo) {
+            $("#"+key).text(serverInfo[key]);
           }
         }
       });

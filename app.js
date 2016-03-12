@@ -4,6 +4,7 @@ var server = require('http').Server(app);
 fs = require('fs');
 os = require("os");
 
+serverinfo = {};
 jsarr = [];
 roomInfo=[];
 

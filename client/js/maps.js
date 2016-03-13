@@ -7,6 +7,7 @@ roomHeader = document.getElementById("roomHeader");
 var joined = 0;
 myRooms = [];
 serverInfo = {};
+roomstat = [];
 exdays = 365;
 
 if(getCookie('name') == ""){
@@ -30,14 +31,18 @@ $('form').submit(function(){
     if ($('#m').val() == ''){
       return false;
     }
-    socket.emit('chatMessage', { name: name,message: $('#m').val()});
+    if($('#m').val().indexOf('/join') > -1 || $('#m').val().indexOf('/giphy') > -1  ){
+      socket.emit('chatMessage', { name: name.replace(/</g,'&lt;'),message: '/'+$('#m').val().replace(/[^a-zA-Z ]/g, "")});
+    }else{
+      socket.emit('chatMessage', { name: name.replace(/</g,'&lt;'),message: $('#m').val().replace(/</g,'&lt;')});
+    }
     if ($('#m').val().indexOf('http') > -1
       && ($('#m').val().indexOf('.jpg') > -1 
       || $('#m').val().indexOf('.png') > -1 
       || $('#m').val().indexOf('.gif') > -1 )){
-      $('#messages').append($('<li class="list-group-item">'+name+'(me):' +'<img src="'+$('#m').val()+'" style="max-width:100%; max-height:100%;"/></li>'));
+      $('#messages').append($('<li class="list-group-item"><span style="font-weight:bold;color : #'+intToRGB(hashCode(name))+';">'+name.replace(/</g,'&lt;')+'(me):</span>' +'<img src="'+$('#m').val().replace(/</g,'&lt;')+'" style="max-width:100%; max-height:100%;"/></li>'));
     }else{
-      $('#messages').append($('<li class="list-group-item">'+name+'(me):' + $('#m').val()+'</li>'));
+      $('#messages').append($('<li class="list-group-item"><span style="font-weight:bold;color : #'+intToRGB(hashCode(name))+';">'+name.replace(/</g,'&lt;')+'(me):</span> <pre>' + $('#m').val().replace(/</g,'&lt;')+'</pre></li>'));
     }
     $('#m').val('');
     
@@ -54,11 +59,11 @@ $('form').submit(function(){
       alert(data.msg);
     }else{
       echoChatWindow('Joined room '+ data.room);
-      console.log('Joined room '+ data.room);
-      myRooms.push(data.room);
-      $("#roomList ul").prepend('<li><button class="btn btn-default" id="roomButton" onclick="joinRoom(\''+data.room+'\')">'+data.room+'</button></li>');
+      console.log('Joined room '+ data.room.replace(/</g,'&lt;'));
+      myRooms.push(data.room.replace(/</g,'&lt;'));
+      $("#roomList ul").prepend('<li><button class="btn btn-default" id="roomButton" onclick="joinRoom(\''+data.room.replace(/</g,'&lt;')+'\')">'+data.room.replace(/</g,'&lt;')+'</button></li>');
       setCookie('myRooms',JSON.stringify(myRooms));
-      fillChatWindow(data.room);
+      fillChatWindow(data.room.replace(/</g,'&lt;'));
       joined = 1;
     }
   });
@@ -67,8 +72,7 @@ $('form').submit(function(){
     roomHeader.innerHTML = "Online Users";
     $("#list ul").empty();
     data.forEach(function(v){
-
-      $("#list ul").append('<li><button class="btn btn-default">'+v.name+'</button></li>');
+      $("#list ul").append('<li><button class="btn btn-default">'+v.name.replace(/</g,'&lt;')+'</button></li>');
     });
 });
 
@@ -77,6 +81,7 @@ $('form').submit(function(){
     for (var key in data) {
       $("#"+key).text(data[key]);
     }
+    roomstat = data;
     serverInfo=data;
   });
 
@@ -87,7 +92,7 @@ $('form').submit(function(){
     if (joined){
       alert("Can only join one room, refresh the page to reset room");
     }else{
-      socket.emit('chatMessage', { name: name, message: '/join '+data});
+      socket.emit('chatMessage', { name: name, message: '/join '+data.replace(/</g,'&lt;')});
     }
     
   }
@@ -109,7 +114,7 @@ $('form').submit(function(){
   }
 
   function echoChatWindow(data){
-    $('#messages').append($('<li class="list-group-item-success">').text(data));
+    $('#messages').append($('<li class="list-group-item-success">').text(data.replace(/</g,'&lt;')));
   }
 
   /*adding messages to the chat window from json files and socket reciepts*/
@@ -118,9 +123,9 @@ $('form').submit(function(){
       && (data.message.indexOf('.jpg') > -1 
       || data.message.indexOf('.png') > -1
       || data.message.indexOf('.gif') > -1)){
-      $('#messages').append($('<li class="list-group-item">'+data.name + ': ' +'<img src="'+data.message+'" style="max-width:100%; max-height:100%;" /></li>'));
+      $('#messages').append($('<li class="list-group-item"><span style="font-weight:bold;color : #'+intToRGB(hashCode(data.name))+';">'+data.name.replace(/</g,'&lt;') + ':</span> ' +'<img src="'+data.message.replace(/</g,'&lt;')+'" style="max-width:100%; max-height:100%;" /></li>'));
     }else{
-      $('#messages').append($('<li class="list-group-item">'+data.name + ': ' +data.message + '</li>'));
+      $('#messages').append($('<li class="list-group-item"><span style="font-weight:bold;color : #'+intToRGB(hashCode(data.name))+';">'+data.name.replace(/</g,'&lt;') + ':</span> <pre>' +data.message.replace(/</g,'&lt;') + '</pre></li>'));
     }
     console.log(chat_window.scrollHeight);
     chat_window.scrollTop = chat_window.scrollHeight;
@@ -144,9 +149,9 @@ $('form').submit(function(){
 function resetName(){
   deleteCookie('name');
   name = prompt("Please enter your name", name);
-  name = name.toLowerCase();
-  chat_name.innerHTML = name;
-  setCookie('name',name);
+  name = name.toLowerCase().replace(/</g,'&lt;');
+  chat_name.innerHTML = name.replace(/</g,'&lt;');
+  setCookie('name',name.replace(/</g,'&lt;'));
 }
 
 function setCookie(cname, cvalue) {
@@ -169,4 +174,19 @@ function getCookie(cname) {
 
 function deleteCookie(cname){
   document.cookie = cname+"=; expires=Thu, 01 Jan 1970 00:00:00 UTC";
+}
+function hashCode(str) { // java String#hashCode
+    var hash = 0;
+    for (var i = 0; i < str.length; i++) {
+       hash = str.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    return hash;
+} 
+
+function intToRGB(i){
+    var c = (i & 0x00FFFFFF)
+        .toString(16)
+        .toUpperCase();
+
+    return "00000".substring(0, 6 - c.length) + c;
 }

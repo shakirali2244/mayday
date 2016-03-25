@@ -40,7 +40,8 @@ function initMap() {
     return false;
   });
   socket.on('chatMessage', function(data){
-    $('#messages').append($('<li>').text(data.name + ':: ' +data.message));
+    timestamp: Date.now();
+    $('#messages').append($('<li>').text(data.name + ':: ' +timestamp +data.message));
     var chat_window = document.getElementById("messages_div");
     chat_window.scrollTop = chat_window.scrollHeight;
   });

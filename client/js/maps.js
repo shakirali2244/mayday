@@ -40,11 +40,11 @@ function initMap() {
     return false;
   });
   socket.on('chatMessage', function(data){
-    timestamp: Date.now();
-    $('#messages').append($('<li>').text(data.name + ':: ' +timestamp +data.message));
+    $('#messages').append($('<li>').text(data.name + ':: ' +data.message));
     var chat_window = document.getElementById("messages_div");
     chat_window.scrollTop = chat_window.scrollHeight;
   });
+  socket.emit("getLocation", "please");
 }
 
 function addMarker(location,name) {
@@ -79,3 +79,5 @@ function deleteMarkers() {
 	clearMarkers();
 	markers = [];
 }
+
+

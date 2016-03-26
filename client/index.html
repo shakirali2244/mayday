@@ -9,64 +9,81 @@
 <head>
 <link href="/css/bootstrap.min.css" rel="stylesheet">
 <link href="/css/font-awesome.min.css" rel="stylesheet">
+<link href="/css/custom.css" rel="stylesheet">
 <link rel='shortcut icon' type='image/x-icon' href='/favicon.ico' />
 
-    <style>
-      * { margin: 0; padding: 0; box-sizing: border-box; }
-      body { font: 13px Helvetica, Arial; }
-      form { background: #000; padding: 3px; position: fixed; bottom: 0; width: 100%; }
-      form input { border: 0; padding: 10px; width: 90%; margin-right: .5%; }
-      form button { width: 9%; background: rgb(130, 224, 255); border: none; padding: 10px; }
-      #roomButton{ width:100%;}
-    </style>
   </head>
   <body>
   <script src="/js/jquery.js"></script>
   
+   <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href ="#"><span style="font-size:55px;">&#9889;</span></a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+	      </ul>
+          <ul class="nav navbar-nav navbar-right">
+          <li class="dropdown">
+           <a href="#" class="dropdown-toggle" data-toggle="dropdown"> <i class="fa fa-info-circle"></i> <span class="caret"></span></a>
+            <div class="dropdown-menu" style = "width:300px;">
+             <div class ="col-md-12" >
+			  <div class="caption">
+			        <h3>Supported Media links for chat</h3>
+			        <ul class="list-group">
+				        <li class="list-group-item">.gif</li>
+				        <li class="list-group-item">.jpg</li>
+				        <li class="list-group-item">.png</li>
+			        </ul>
+			   </div>
+			   <div class="caption">
+			        <h3>Supported comands for chat</h3>
+			        <ul class="list-group">
+				        <li class="list-group-item"><b>/join <i>room_name</i></b><br /> ^-- This creates a hidden room if it does not exist on the list</li>
+	              <li class="list-group-item"><b>/giphy <i>search terms</i></b><br /> ^-- This asks a bot to lookup relevent gif on giphy.com</li>
+			        </ul>
+			   </div>
+			</div>
+            </div>
+	      </li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-history"></i> <span class="caret"></span></a>
+              <ul id="roomList"class="dropdown-menu">
+        		<!--li><button class="btn btn-default" onclick="joinRoom('test')">test</button></li-->
+      			</ul>
+            </li>
+            <li><a href="javascript:void(0);" onclick="resetName()"><i class="fa fa-user"></i>&nbsp;<span id ="chat_name"></span></a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
 
 <div class="container-fluid">
+
 <div class="row">
-<div class ="col-md-6 col-xs-4" >
-  <div class="row" style="min-height:500px;">
-   <div class ="col-md-6 col-xs-4" >
-    <h3> Hello <span id ="chat_name">Stranger</span></h3><button class="btn btn-default" id="roomButton" onclick="resetName()">Reset Name</button>
-	  <!--div class="embed-responsive embed-responsive-16by9">
-	  	<iframe class="embed-responsive-item" src="https://www.youtube.com/embed/5A-4VGfx5lU" allowfullscreen></iframe>
-	  </div-->
-    </div>
-    <div class ="col-md-6 col-xs-4" id = "roomList" style="max-height: 50vh;overflow-y:scroll;">
-    <li class="list-group-item active"><h3>Join a previous room again</h3></li>
-      <ul class="tabs nav nav-pills nav-stacked">
-        <!--li><button class="btn btn-default" onclick="joinRoom('test')">test</button></li-->
-      </ul>
-    </div>
-  </div>
-  <div class="row" style="min-height: 50vh;">
-	  <div class ="col-md-6 col-xs-4" >
-		  <div class="caption">
-		        <h3>Supported Media links for chat</h3>
-		        <ul class="list-group">
-			        <li class="list-group-item">.gif</li>
-			        <li class="list-group-item">.jpg</li>
-			        <li class="list-group-item">.png</li>
-		        </ul>
+<div class ="col-md-3 col-xs-3" >
+  <div class="row">
+		<div id = "list" style="max-height: 90vh;overflow-y:scroll;" >
+		<li class="list-group-item active" id="roomHeader"><h3>Click on a subreddit to start talking in</h3></li>
+		  <ul class="tabs nav nav-pills nav-stacked">
+		    <li><button class=" btn btn-default" id="roomButton" onclick="joinRoom('sfu')">SFU<span id="sfu" class="badge"></span></button></li>
+		    <li><button class=" btn btn-default" id="roomButton" onclick="joinRoom('bigbrother')">bigbrother<span id="bigbrother" class="badge"></span></button></li>
+		        <!--li><button class="btn btn-default" onclick="joinRoom('test')">test</button></li-->
+		    </ul>
+   		</div>
+   	</div>
+   	<div class="row">
+		    <div class="caption" style = "position: fixed; bottom: 0;">
+		        <h3>Send feedback to:<a href="mailto:shakira@sfu.ca?Subject=[redditchat]" target="_top">shakira@sfu.ca</a> | <a href="https://github.com/shakirali2244/mayday"><i class="fa fa-github"></i></a></h3>
 		   </div>
-		</div>
-		<div class ="col-md-6 col-xs-4" >
-		  <div class="caption">
-		        <h3>Supported comands for chat</h3>
-		        <ul class="list-group">
-			        <li class="list-group-item"><b>/join <i>room_name</i></b><br /> ^-- This creates a hidden room if it does not exist on the list</li>
-              <li class="list-group-item"><b>/giphy <i>search terms</i></b><br /> ^-- This asks a bot to lookup relevent gif on giphy.com</li>
-		        </ul>
-		   </div>
-       
-		</div>
-    <div class="caption" style = "position: absolute;
-  bottom: 0px;">
-            <h3>Send feedback to:<a href="mailto:shakira@sfu.ca?Subject=[redditchat]" target="_top">shakira@sfu.ca</a> | <a href="https://github.com/shakirali2244/mayday"><i class="fa fa-github"></i></a></h3>
-       </div>
-   </div>
+	 </div>
   <!--
   <div class="row" style="min-height:300px;">
   <marquee direction="down" width="100%" height="300" behavior="alternate" >
@@ -84,25 +101,19 @@
 </div>
 -->
 </div>
-<div class="col-md-3 col-xs-4">
-  <div id="messages_div" class="row" style="max-height: 96vh;overflow-y:scroll;">
+<div class="col-md-9 col-xs-12">
+  <div id="messages_div" class="row" style="max-height: 94vh;overflow-y:scroll;">
   <ul id="messages" class="list-group"></ul>
       <form action="">
         <input id="m" autocomplete="off" /><button>Send</button>
       </form>
   </div>
 </div>
-<div class ="col-md-3 col-xs-4" id = "list" style="max-height: 100vh;overflow-y:scroll;">
-<li class="list-group-item active" id="roomHeader"><h3>Click on a subreddit to start talking in</h3></li>
-  <ul class="tabs nav nav-pills nav-stacked">
-    <li><button class=" btn btn-default" id="roomButton" onclick="joinRoom('sfu')">SFU<span id="sfu" class="badge"></span></button></li>
-    <li><button class=" btn btn-default" id="roomButton" onclick="joinRoom('vancouver')">Vancouver<span id="vancouver" class="badge"></span></button></li>
-        <!--li><button class="btn btn-default" onclick="joinRoom('test')">test</button></li-->
-    </ul>
-</div>
+
 
 </div>
-<script src="http://shakirali.me:3001/socket.io/socket.io.js"></script>
+</div>
+<script src="http://redditchat.us.to:3001/socket.io/socket.io.js"></script>
 
   <script src = "/js/maps.js"></script>
   <script src="js/bootstrap.min.js"></script>

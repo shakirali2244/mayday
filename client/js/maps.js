@@ -23,7 +23,7 @@ if(getCookie('name') == ""){
   }
   
   for (var i=0; i<myRooms.length; i++) {
-    $("#roomList ul").prepend('<li><button class="btn btn-default" id="roomButton" onclick="joinRoom(\''+myRooms[i]+'\')">'+myRooms[i]+'</button></li>');
+    $("#roomList").prepend('<li><button class="btn btn-default" id="roomButton" onclick="joinRoom(\''+myRooms[i]+'\')">'+myRooms[i]+'</button></li>');
   }
 }
 
@@ -42,7 +42,7 @@ $('form').submit(function(){
       || $('#m').val().indexOf('.gif') > -1 )){
       $('#messages').append($('<li class="list-group-item"><span style="font-weight:bold;color : #'+intToRGB(hashCode(name))+';">'+name.replace(/</g,'&lt;')+'(me):</span>' +'<img src="'+$('#m').val().replace(/</g,'&lt;')+'" style="max-width:100%; max-height:100%;"/></li>'));
     }else{
-      $('#messages').append($('<li class="list-group-item"><span style="font-weight:bold;color : #'+intToRGB(hashCode(name))+';">'+name.replace(/</g,'&lt;')+'(me):</span> <pre>' + $('#m').val().replace(/</g,'&lt;')+'</pre></li>'));
+      $('#messages').append($('<li class="list-group-item"><span style="font-weight:bold;color : #'+intToRGB(hashCode(name))+';">'+name.replace(/</g,'&lt;')+'(me):</span>' + $('#m').val().replace(/</g,'&lt;')+'</li>'));
     }
     $('#m').val('');
     
@@ -125,7 +125,7 @@ $('form').submit(function(){
       || data.message.indexOf('.gif') > -1)){
       $('#messages').append($('<li class="list-group-item"><span style="font-weight:bold;color : #'+intToRGB(hashCode(data.name))+';">'+data.name.replace(/</g,'&lt;') + ':</span> ' +'<img src="'+data.message.replace(/</g,'&lt;')+'" style="max-width:100%; max-height:100%;" /></li>'));
     }else{
-      $('#messages').append($('<li class="list-group-item"><span style="font-weight:bold;color : #'+intToRGB(hashCode(data.name))+';">'+data.name.replace(/</g,'&lt;') + ':</span> <pre>' +data.message.replace(/</g,'&lt;') + '</pre></li>'));
+      $('#messages').append($('<li class="list-group-item"><span style="font-weight:bold;color : #'+intToRGB(hashCode(data.name))+';">'+data.name.replace(/</g,'&lt;') + ':</span> ' +data.message.replace(/</g,'&lt;') + '</li>'));
     }
     console.log(chat_window.scrollHeight);
     chat_window.scrollTop = chat_window.scrollHeight;
@@ -134,7 +134,7 @@ $('form').submit(function(){
   $.ajax({
         type: "GET",
         url: "https://api.pushshift.io/reddit/topsubs",
-        data: "lookback=100",
+        data: "lookback=50",
         success: function(data) {
           var array = data.data;
           for (var i=0; i<array.length; i++) {

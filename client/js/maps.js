@@ -100,7 +100,7 @@ $('form').submit(function(){
   function fillChatWindow(data){
     $.ajax({
         type: "GET",
-        url: "http://chat.badgerworks.org:3001/msgs/"+data,
+        url: "/msgs/"+data,
         success: function(data) {
           console.log(data);
           var array = data.match(/[^\r\n]+/g);

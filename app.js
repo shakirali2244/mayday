@@ -10,7 +10,7 @@ jsarr = [];
 roomInfo=[];
 
 io = require('socket.io')(server);
-app.use(express.static('msgs'));
+app.use('/msgs/',express.static('./client/msgs'));
 
 var socket = require('./lib/socket');
 

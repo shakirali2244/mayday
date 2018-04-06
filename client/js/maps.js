@@ -1,4 +1,3 @@
-
 socket = io.connect('http://redditchat.us.to:3001');
 var name = '';
 chat_window = document.getElementById("messages_div");
@@ -29,7 +28,7 @@ if(getCookie('name') == ""){
 
 $('form').submit(function(){
     if ($('#m').val() == ''){
-      return false;
+        return false;
     }
     if($('#m').val().indexOf('/join') > -1 || $('#m').val().indexOf('/giphy') > -1  ){
       socket.emit('chatMessage', { name: name.replace(/</g,'&lt;'),message: '/'+$('#m').val().replace(/[^a-zA-Z ]/g, "")});
@@ -101,9 +100,9 @@ $('form').submit(function(){
   function fillChatWindow(data){
     $.ajax({
         type: "GET",
-        url: "/msgs/"+data,
+        url: "http://chat.badgerworks.org:3001/msgs/"+data,
         success: function(data) {
-          //console.log(data);
+          console.log(data);
           var array = data.match(/[^\r\n]+/g);
           for (var i=0; i<array.length; i++) {
             addMessage(JSON.parse(array[i]));
@@ -133,8 +132,7 @@ $('form').submit(function(){
 
   $.ajax({
         type: "GET",
-        url: "https://api.pushshift.io/reddit/topsubs",
-        data: "lookback=50",
+        url: "http://redditchat.us.to/rooms.json",
         success: function(data) {
           var array = data.data;
           for (var i=0; i<array.length; i++) {
